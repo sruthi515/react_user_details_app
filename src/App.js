@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Home from './components/Home';
+
 import UserDetails from './components/UserDetails';
-import './App.css';
+import Home from './components/Home';
 
 class App extends Component {
  
   render() {
-    // const {dispatch}=this.props
     return (
       <div className="App">
         <Switch>

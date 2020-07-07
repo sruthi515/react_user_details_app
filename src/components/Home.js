@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -12,8 +12,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import  {fetchUsersDetails,deleteUser,setOrder,setOrderBy,setSelected,setPage,setRowsPerPage} from '../actions';
-import EnhancedTableHead from './Header';
+import Header from './Header';
+import  {fetchUsersDetails,deleteUser,setOrder,setOrderBy,setPage,setRowsPerPage} from '../actions';
 
 const useStyles ={
   root: {
@@ -21,28 +21,16 @@ const useStyles ={
   },
   paper: {
     width: '100%',
-    // marginBottom: theme.spacing(2),
   },
   table: {
     minWidth: 750,
   },
-  visuallyHidden: {
-    border: 0,
-    clip: 'rect(0 0 0 0)',
-    height: 1,
-    margin: -1,
-    overflow: 'hidden',
-    padding: 0,
-    position: 'absolute',
-    top: 20,
-    width: 1,
-  },
   openBtn:{
-    
+    textDecoration: 'none'
   }
 }
 
-class EnhancedTable extends Component {
+class Home extends Component {
   
   constructor(props){
     super(props);
@@ -84,8 +72,7 @@ class EnhancedTable extends Component {
 
   render() {
     const classes = useStyles;
-    const { rows, order,orderBy,selected,page,rowsPerPage,fetchUsersDetails,deleteUser,setOrder,setOrderBy,setSelected,setPage,setRowsPerPage } = this.props
-    console.log('rows:: ', rows)
+    const { rows, order,orderBy,selected,page,rowsPerPage,fetchUsersDetails,deleteUser,setOrder,setOrderBy,setPage,setRowsPerPage } = this.props
     const handleRequestSort = (event, property) => {
       const isAsc = orderBy === property && order === 'asc';
       setOrder(isAsc ? 'desc' : 'asc');
@@ -114,7 +101,7 @@ class EnhancedTable extends Component {
               aria-labelledby="tableTitle"
               aria-label="enhanced table"
             >
-              <EnhancedTableHead
+              <Header
                 classes={classes}
                 numSelected={selected.length}
                 order={order}
@@ -128,7 +115,6 @@ class EnhancedTable extends Component {
                   .map((row, index) => {
                     const isItemSelected = isSelected(row.name);
                     const labelId = `enhanced-table-checkbox-${index}`;
-
                     return (
                       <TableRow
                         hover
@@ -147,9 +133,9 @@ class EnhancedTable extends Component {
                         <TableCell align="right">{row.company.name}</TableCell>
                         <TableCell align="right">
                             <Link to={`/user/`+row.id} >
-                            <Button variant="contained" color="primary">Open</Button>
+                            <Button variant="contained" color="primary" >Open</Button>
                             </Link>
-                          <IconButton  onClick={ (e) => { console.log(e); console.log(row);deleteUser(row.id)} }> 
+                          <IconButton  onClick={ (e) => { deleteUser(row.id)} }> 
                             <DeleteIcon /> 
                           </IconButton>     
                         </TableCell>
@@ -198,10 +184,9 @@ const connectDispatchToProps = (dispatch) => {
      deleteUser: (userId) => dispatch(deleteUser(userId)),
      setOrder: (order) => dispatch(setOrder(order)),
      setOrderBy: (orderBy) => dispatch(setOrderBy(orderBy)),
-     setSelected: (selected) => dispatch(setSelected(selected)),
      setPage: (page) => dispatch(setPage(page)),
      setRowsPerPage: (rowsPerPage) => dispatch(setRowsPerPage(rowsPerPage))
   }
 }
 
-export default connect(connectStateToProps, connectDispatchToProps)(EnhancedTable);
+export default connect(connectStateToProps, connectDispatchToProps)(Home);
