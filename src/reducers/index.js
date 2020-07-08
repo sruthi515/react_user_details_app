@@ -23,7 +23,6 @@ export const userDetailsReducer = (state = [], action) => {
 const filters_initial_state = {
     order: 'asc',
     orderBy: 'name',
-    selected: [],
     page: 0,
     rowsPerPage: 5
 }

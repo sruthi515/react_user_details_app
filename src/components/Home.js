@@ -11,24 +11,32 @@ import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/core'
 
 import Header from './Header';
 import  {fetchUsersDetails,deleteUser,setOrder,setOrderBy,setPage,setRowsPerPage} from '../actions';
 
-const useStyles ={
-  root: {
-    width: '100%',
+const theme = createMuiTheme({
+  overrides: {
+    MuiTableCell: {
+      root: {
+        padding: '7px',
+      },
+    }
   },
-  paper: {
-    width: '100%',
-  },
-  table: {
-    minWidth: 750,
-  },
-  openBtn:{
-    textDecoration: 'none'
-  }
-}
+});
+
+const paper=  {
+  width: '100%',
+};
+
+const header= {
+  textAlign:"center",
+  fontSize:'20',
+  fontWeight:"bold",
+  marginBottom:'10px'
+};
 
 class Home extends Component {
   
@@ -71,13 +79,13 @@ class Home extends Component {
   }
 
   render() {
-    const classes = useStyles;
-    const { rows, order,orderBy,selected,page,rowsPerPage,fetchUsersDetails,deleteUser,setOrder,setOrderBy,setPage,setRowsPerPage } = this.props
+    const { rows, order,orderBy,page,rowsPerPage,fetchUsersDetails,deleteUser,setOrder,setOrderBy,setPage,setRowsPerPage } = this.props
     const handleRequestSort = (event, property) => {
       const isAsc = orderBy === property && order === 'asc';
       setOrder(isAsc ? 'desc' : 'asc');
       setOrderBy(property);
     };
+    const classes = ()=> { return useStyles() };
 
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
@@ -87,23 +95,22 @@ class Home extends Component {
       setRowsPerPage(parseInt(event.target.value, 10));
       setPage(0);
     };
-
-    const isSelected = (name) => selected.indexOf(name) !== -1;
-
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
     return (  
-      <div className={classes.root}>
-        <Paper className={classes.paper}>
+      <div>
+      <div style = {header}>
+        User Details Table
+      </div>
+        <Paper style={paper}>
           <TableContainer>
+            <ThemeProvider theme={theme}>
             <Table
-              className={classes.table}
+              
               aria-labelledby="tableTitle"
               aria-label="enhanced table"
             >
               <Header
-                classes={classes}
-                numSelected={selected.length}
                 order={order}
                 orderBy={orderBy}
                 onRequestSort={handleRequestSort}
@@ -113,15 +120,12 @@ class Home extends Component {
                 {this.stableSort(rows, this.getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
-                    const isItemSelected = isSelected(row.name);
                     const labelId = `enhanced-table-checkbox-${index}`;
                     return (
                       <TableRow
                         hover
-                        aria-checked={isItemSelected}
                         tabIndex={-1}
                         key={row.id}
-                        selected={isItemSelected}
                       >
                         <TableCell padding="checkbox"></TableCell>
                         <TableCell component="th" id={labelId} scope="row" padding="none"> {row.name} </TableCell>
@@ -150,6 +154,7 @@ class Home extends Component {
                 )}
               </TableBody>
             </Table>
+            </ThemeProvider>
           </TableContainer>
           <TablePagination
             rowsPerPageOptions={[5, 10]}
@@ -172,7 +177,6 @@ const connectStateToProps = (state) => {
     rows: state.userDetails,
     order: state.filters.order,
     orderBy: state.filters.orderBy,
-    selected: state.filters.selected,
     page: state.filters.page,
     rowsPerPage: state.filters.rowsPerPage
   }

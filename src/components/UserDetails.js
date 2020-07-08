@@ -11,13 +11,24 @@ const useStyles = makeStyles({
     root: {
       minWidth: 275,
       color: "black",
-      height: "80vh",
+      height: "10vh",
+      margin: '10px'
     },
     container : {
         padding: "10px",
         margin: "50px",
         backgroundColor: '#ebeded'
-    }
+    },
+    header:{
+        textAlign:"center",
+        fontSize:'20',
+        fontWeight:"bold"
+    },
+    innerContainer : {
+        marginLeft: "20px",
+        fontSize:'16',
+        fontWeight: "bolder",
+    } 
   });
 
 function UserDetails(props){
@@ -26,28 +37,49 @@ function UserDetails(props){
     let currentUserDetails = props.getUserDetails(userId)  
     return(
         <div className={classes.container}>
+            <div className={classes.header}>
+                User Details
+            </div>
              <Card className={classes.root}>
-                <CardContent>
+                <CardContent className={classes.innerContainer}>
                     <Typography variant="body2" component="p">
                         user Id :: {currentUserDetails.id}
                     </Typography>
+                </CardContent>
+            </Card>
+
+            <Card className={classes.root}>
+                <CardContent className={classes.innerContainer}>
                     <Typography variant="body2" component="p">
                         Name :: {currentUserDetails.name}
                     </Typography>
-                    <Typography variant="body2" component="p">
-                        User Name :: {currentUserDetails.userName}
-                    </Typography>
+                </CardContent>
+            </Card>
+
+            <Card className={classes.root}>
+                <CardContent className={classes.innerContainer}>
                     <Typography variant="body2" component="p">
                         Email :: {currentUserDetails.email}
                     </Typography>
+                </CardContent>
+            </Card>
+
+            <Card className={classes.root}>
+                <CardContent className={classes.innerContainer}>
                     <Typography variant="body2" component="p">
-                        Phone :: {currentUserDetails.phone}
-                    </Typography>
-                    <Typography variant="body2" component="p">
-                        Website :: {currentUserDetails.website}
+                    Phone :: {currentUserDetails.phone}
                     </Typography>
                 </CardContent>
             </Card>
+
+            <Card className={classes.root}>
+                <CardContent className={classes.innerContainer}>
+                    <Typography variant="body2" component="p">
+                    Website :: {currentUserDetails.website}
+                    </Typography>
+                </CardContent>
+            </Card>
+
         </div>
     );
 }
